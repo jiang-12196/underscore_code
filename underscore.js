@@ -74,8 +74,108 @@
 
     _.iteratee = function (value, context) {
         return cb(value, context, Infinity)
+    };
+
+    var createAssigner = function (keysFunc, undefinedOnly) {
+        return function (obj) {
+            var length = arguments.length;
+            if (length < 2 || obj == null) return obj;
+            for (var index = 1; index < length; index ++) {
+                var source = arguments[index],
+                    keys = keysFunc(source),
+                    l = keys.length;
+                for (var i = 0; i <l; i++) {
+                    var key = keys[i];
+                    if (!undefinedOnly || obj[key] === void 0) {
+                        obj[key] = source[key];
+                    }
+                }
+            }
+            return obj;
+        }
+    };
+
+    var baseCreate = function (prototype) {
+        if (!_.isObject(prototype)) return {};
+
+        if(nativeCreate) return nativeCreate(prototype);
+        Ctor.prototype = prototype;
+        var result = new Ctor;
+        Ctor.prototype = null;
+        return result;
+    };
+
+    var property = function (key) {
+        return function (obj) {
+            return obj == null ? void 0 : obj[key];
+        }
+    };
+
+    var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+    
+    var getLength = property('length');
+    
+    var isArrayLike = function (collection) {
+        var length = getLength(collection);
+        return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+    };
+
+    _.chain = function (obj) {
+        var instance = _(obj);
+        instance._chain = true;
+        return instance;
+    };
+
+    var result = function (instance, obj) {
+        return instance._chain ? _(obj).chain() : obj;
+    };
+
+    _.mixin = function (obj) {
+      _.each(_.functions(obj), function (name) {
+          var func = _[name] = obj[name];
+          _.prototype[name] = function () {
+              var args = [this._wrapped];
+              push.apply(args, arguments);
+
+              return result(this, func.apply(_. args));
+          }
+      })
+    };
+
+    _.mixin(_);
+
+    _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function (name) {
+        var method = ArrayProto[name];
+        _.prototype[name] = function () {
+            var obj = this._wrapped;
+            method.apply(obj, arguments);
+
+            if ((name === 'shift' || name === 'splice') && obj.length === 0)
+                delete obj[0];
+            return result(this, obj);
+        }
+    });
+
+    _.each(['concat', 'join', 'slice'], function (name) {
+        var method = ArrayProto[name];
+        _.prototype[name] = function () {
+            return result(this, method.apply(this._wrapped, arguments));
+        }
+    });
+
+    _.prototype.value = function () {
+        return this._wrapped;
+    };
+
+    _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
+
+    _.prototype.toString = function () {
+        return '' + this._wrapped;
     }
 
-
-
+    if (typeof define === 'function' && define.amd) {
+        define('underscore', [], function () {
+            return _;
+        })
+    }
 }.call(this));
