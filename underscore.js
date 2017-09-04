@@ -63,7 +63,7 @@
         return function () {
             return func.apply(context, arguments);
         }
-    }
+    };
 
     var cb = function (value, context, argCount) {
         if (value == null) return _.identity;
@@ -120,6 +120,40 @@
         return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
     };
 
+    //collections
+    _.each = _.forEach = function (obj, iteratee, context) {
+        iteratee = optimizeCb(iteratee, context);
+
+        var i, length;
+
+        if(isArrayLike(obj)) {
+            for (i = 0, length = obj.length; i < length; i++) {
+                iteratee(obj[i], i, obj);
+            }
+        } else {
+            var keys = _.keys(obj);
+            for (i = 0, length = keys.length; i < length; i++) {
+                iteratee(obj(keys[i]), keys[i], obj);
+            }
+        }
+
+        return obj;
+    };
+
+    _.functions = _.methods = function (obj) {
+        var names = [];
+        for (var key in obj) {
+            if(_.isFunction(obj[key])) names.push(key)
+        }
+        return names.sort();
+    };
+
+    if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+        _.isFunction = function (obj) {
+            return typeof obj == 'function' || false;
+        }
+    }
+
     _.chain = function (obj) {
         var instance = _(obj);
         instance._chain = true;
@@ -171,7 +205,7 @@
 
     _.prototype.toString = function () {
         return '' + this._wrapped;
-    }
+    };
 
     if (typeof define === 'function' && define.amd) {
         define('underscore', [], function () {
