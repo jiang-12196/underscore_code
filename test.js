@@ -1,11 +1,19 @@
 var _ = require('./underscore');
 
 var log = function (index) {
-    console
-}
+    console.log(index);
+};
 
 _.each([1,2,3], function (index) {
-    console.log(index);
+    log(index)
 });
 
-_.each({1: 'jiang', 2: 'zuo', 3: 'han'})
+_.each({1: 'jiang', 2: 'zuo', 3: 'han'}, function (index) {
+    log(index)
+});
+
+const mapResult = _.map([1,2,3], function (num) {
+    return num * 4;
+});
+
+log(mapResult);

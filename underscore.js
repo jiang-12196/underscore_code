@@ -154,6 +154,62 @@
         return results;
     };
 
+    function createReduce(dir) {
+
+    }
+
+    _.keys = function (obj) {
+        if(!_.isObject(obj)) return [];
+
+        if(nativeKeys) return nativeKeys(obj);
+
+        var keys = [];
+        for (var key in obj) {
+            if( _.has(obj, key)) keys.push(key);
+        }
+        if (hasEnumBug) collectNonEnumProps(obj, keys);
+
+        return keys;
+    };
+
+    var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+    var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+                                'propertyIsEnumerable', 'hasOwnProperty','toLocalString'];
+
+    function collectNonEnumProps(obj, keys) {
+        var nonEnumIdx = nonEnumerableProps.length;
+        var constructor = obj.constructor;
+
+        var proto = (_.isFunction(constructor) && constructor.prototype) || ObjProto;
+        var prop = 'constructor';
+
+        if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
+
+        while (nonEnumIdx--) {
+            prop = nonEnumerableProps[nonEnumIdx];
+            if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
+                keys.push(prop)
+            }
+        }
+    }
+
+    _.contains = _.includes = _.include = function (obj, item, fromIndex, guard) {
+          if (!isArrayLike(obj)) obj = _.values(obj);
+
+          if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+
+          return _.indexOf(obj, item, fromIndex) >= 0;
+    };
+
+    _.isObject = function (obj) {
+        var type = typeof obj;
+        return type === 'function' || type === 'object' && !!obj;
+    };
+
+    _.has = function (obj, key) {
+        return obj != null && hasOwnProperty.call(obj, key)
+    };
+
     _.functions = _.methods = function (obj) {
         var names = [];
         for (var key in obj) {
