@@ -133,7 +133,7 @@
         } else {
             var keys = _.keys(obj);
             for (i = 0, length = keys.length; i < length; i++) {
-                iteratee(obj(keys[i]), keys[i], obj);
+                iteratee(obj[keys[i]], keys[i], obj);
             }
         }
 
