@@ -15,5 +15,10 @@ _.each({1: 'jiang', 2: 'zuo', 3: 'han'}, function (index) {
 const mapResult = _.map([1,2,3], function (num) {
     return num * 4;
 });
-
 log(mapResult);
+
+
+var sum = _.reduce([1,2,3], function(memo, num) {
+    return memo + num;
+    }, 0)
+log(sum);
