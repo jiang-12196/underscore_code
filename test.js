@@ -20,5 +20,15 @@ log(mapResult);
 
 var sum = _.reduce([1,2,3], function(memo, num) {
     return memo + num;
-    }, 0)
+    }, 0);
 log(sum);
+
+var list = [[1,2], [3,4], [5,6]];
+var flat = _.reduceRight(list, function (a,b) {
+    return a.concat(b);
+}, []);
+log(flat);
+var ff = _.reduceRight([1,2,3], function (arr,a) {
+    console.log("--->", a);
+}, []);
+log(ff);
