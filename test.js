@@ -32,3 +32,19 @@ var ff = _.reduceRight([1,2,3], function (arr,a) {
     console.log("--->", a);
 }, []);
 log(ff);
+
+var even = _.find([0,2,3,4,5], function (num) {
+    return num % 2 === 1;
+});
+
+log(even);
+
+var enens = _.filter([0,1,2,3,4,5], function (num) {
+    return num % 2 ===1;
+});
+log(enens);
+
+var reject = _.reject([0,1,2,3,4,5], function (num) {
+    return num % 2 ===1;
+});
+log(reject);

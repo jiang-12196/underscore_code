@@ -193,6 +193,47 @@
         if (key !== void 0 && key !== -1) return obj[key];
     };
 
+    _.filter = _.select = function (obj, predicate, context) {
+        var results = [];
+        predicate = cb(predicate, context);
+        _.each(obj, function (value, index, list) {
+            if (predicate(value, index, list)) results.push(value);
+        });
+        return results;
+    };
+    
+    _.reject = function (obj, predicate, context) {
+        return _.filter(obj, _.negate(cb(predicate)), context);
+    };
+    
+    _.negate = function (predicate) {
+        return function () {
+            return !predicate.apply(this, arguments);
+        }
+    };
+
+    _.every = _.all = function (obj, predicate, context) {
+        predicate = cb(predicate, context);
+        var keys = !isArrayLike(obj) && _.keys(obj),
+            length = (keys || obj).length;
+        for (var index = 0; index < length; index++) {
+            var currentKey = keys ? keys[index] : index;
+            if (!predicate(obj[currentKey], currentKey, obj)) return false;
+        }
+        return true;
+    };
+
+    _.some = _.any = function (obj, predicate, context) {
+        predicate = cb(predicate, context);
+        var keys = !isArrayLike(obj) && _.keys(obj),
+            length = (keys || obj).length;
+        for (var index = 0; index < length; index++) {
+            var currentKey = keys ? keys[index] : index;
+            if (predicate(obj[currentKey], currentKey, obj)) return true;
+        }
+        return false;
+    };
+
     function createPredicateIndexFinder(dir) {
         return function (array, predicate, context) {
             predicate = cb(predicate, context);
