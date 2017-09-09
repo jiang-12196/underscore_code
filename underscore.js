@@ -234,6 +234,66 @@
         return false;
     };
 
+
+    _.contains = _.includes = _.include = function (obj, item, fromIndex, guard) {
+        if (!isArrayLike(obj)) obj = _.values(obj);
+        if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+        return _.indexOf(obj, item, fromIndex) >= 0;
+    };
+
+    _.values = function (obj) {
+        var keys = _.keys(obj);
+        var length = keys.length;
+        var values = Array(length);
+        for (var i = 0; i < length; i++) {
+            values[i] = obj[keys[i]];
+        }
+        return values;
+    };
+
+    _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
+
+    _.sortedIndex = function (array, obj, iteratee, context) {
+        iteratee = cb(iteratee, context, 1);
+        var value = iteratee(obj);
+        var low = 0, high = getLength(array);
+        while (low < high) {
+            var mid = Math.floor((low + high) / 2);
+            if (iteratee(array[mid] < value))
+                low = mid + 1;
+            else
+                high = mid;
+        }
+        return low;
+    };
+
+    function createIndexFinder(dir, predicateFind, sortedIndex) {
+        return function (array, item, idx) {
+            var i = 0, length = getLength(array);
+            if (typeof idx == 'number') {
+                if (dir > 0) {
+                    i = idx >= 0? idx : Math.max(idx + length, i);
+                } else {
+                    length = idx >= 0 ? Math.min(idx + 1, length) : idx + length +1;
+                }
+            } else  if (sortedIndex && idx && length) {
+                idx = sortedIndex(array, item);
+
+                return array[indx] === item ? idx : -1;
+            }
+
+            if (item !== item) {
+                idx = predicateFind(slice.call(array, i, length), _.isNaN);
+                return idx >= 0 ? idx + 1 : -1;
+            }
+
+            for (idx = dir > 0 ? i :length - 1; idx >= 0 && idx < length; idx += dir) {
+                if (array[idx] === item) return idx;
+            }
+            return -1;
+        }
+    }
+
     function createPredicateIndexFinder(dir) {
         return function (array, predicate, context) {
             predicate = cb(predicate, context);
