@@ -362,6 +362,17 @@
           return _.indexOf(obj, item, fromIndex) >= 0;
     };
 
+    _.invoke = function (obj, method) {
+        var args = slice.call(arguments, 2);
+        var isFunc = _.isFunction(method);
+        console.log(arguments,"---->invoke-->",args, isFunc);
+        //[]['sort'] sort function
+        return _.map(obj, function (value) {
+            var func = isFunc ? method : value[method];
+            return func == null ? func : func.apply(value, args);
+        })
+    };
+
     _.isObject = function (obj) {
         var type = typeof obj;
         return type === 'function' || type === 'object' && !!obj;

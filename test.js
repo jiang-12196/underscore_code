@@ -51,3 +51,11 @@ log(reject);
 
 var contain = _.contains([1,2,3,4], 4);
 log(contain);
+
+var containObj = _.contains({1: "jiang", 2: "zuo", 3: "han"}, "han");
+log(containObj);
+
+// var sort = _.invoke([[5,1,2,3,4],[1,53,4,23,4]], 'sort');
+// log(sort);
+var sort1 = _.invoke([[5,1,2,3,4],[1,53,4,23,4]], 'concat', 'jiang');
+log(sort1);
