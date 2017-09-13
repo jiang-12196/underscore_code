@@ -69,3 +69,7 @@ log(findWhere);
 var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
 var max = _.max(stooges, function(stooge){ return stooge.age; });
 log(max);
+
+// var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+var min = _.min(stooges, function(stooge){ return stooge.name; });
+log(min);
