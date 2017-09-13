@@ -373,6 +373,38 @@
         })
     };
 
+    _.prototype =  property;
+
+    //pluck也许是map最常使用的用例模型的简化版本，即萃取对象数组中某属性值，返回一个数组。
+    _.pluck = function (obj, key) {
+        return _.map(obj, _.prototype(key));
+    };
+
+    _.where = function (obj, attrs) {
+        return _.filter(obj, _.matcher(attrs));
+    };
+
+    _.matcher = _.matches = function (attrs) {
+        attrs = _.extendOwn({}, attrs);
+        return function (obj) {
+            return _.isMatch(obj, attrs);
+        }
+    };
+
+    _.extendOwn = _.assign = createAssigner(_.keys);
+
+    _.isMatch = function (object, attrs) {
+        var keys = _.keys(attrs);
+        var length = keys.length;
+        if (object == null) return !length;
+        var obj = Object(object);
+        for (var i = 0; i < length; i++) {
+            var key = keys[i];
+            if (attrs[key] !== obj[key] || !(key in obj)) return false;
+        }
+        return true;
+    };
+
     _.isObject = function (obj) {
         var type = typeof obj;
         return type === 'function' || type === 'object' && !!obj;
