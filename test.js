@@ -59,3 +59,13 @@ log(containObj);
 // log(sort);
 var sort1 = _.invoke([[5,1,2,3,4],[1,53,4,23,4]], 'concat', 'jiang');
 log(sort1);
+
+var where = _.where([{title: "Cymbeline", author: "Shakespeare", year: 1611}, {author: "Shakespeare", year: 1611}], {author: "Shakespeare", year: 1611});
+log(where);
+
+var findWhere = _.findWhere([{title: "Cymbeline", author: "Shakespeare", year: 1611}, {author: "Shakespeare", year: 1611}], {author: "Shakespeare", year: 1611});
+log(findWhere);
+
+var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+var max = _.max(stooges, function(stooge){ return stooge.age; });
+log(max);
