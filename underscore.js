@@ -469,7 +469,7 @@
                 return {
                     value: value,
                     index: index,
-                    criteria: iteratee(value, index, list);
+                    criteria: iteratee(value, index, list)
                 }
             }).sort(function (left, right) {
                 var a = left.criteria;
