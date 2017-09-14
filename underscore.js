@@ -439,6 +439,28 @@
         return result;
     };
 
+    _.shuffle = function (obj) {
+        var set = isArrayLike(obj) ? obj : _.values(obj);
+        var length = set.length;
+        var shuffled = Array(length);
+        for (var index = 0, rand; index < length; index++) {
+            rand  = _.random(0, index);
+            // if do not equal, take rand to index (last one)
+            if (rand !== index) shuffled[index] = shuffled[rand];
+            // rand get new number
+            shuffled[rand] = set[index];
+        }
+        return shuffled;
+    };
+
+    _.random = function (min, max) {
+        if (max == null) {
+            max = min;
+            min = 0;
+        }
+        return min + Math.floor(Math.random() * (max - min + 1));
+    };
+
     _.matcher = _.matches = function (attrs) {
         attrs = _.extendOwn({}, attrs);
         return function (obj) {

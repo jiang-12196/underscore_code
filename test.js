@@ -73,3 +73,6 @@ log(max);
 // var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
 var min = _.min(stooges, function(stooge){ return stooge.name; });
 log(min);
+
+var shuffle = _.shuffle([1, 2, 3, 4, 5, 6]);
+log(shuffle);
