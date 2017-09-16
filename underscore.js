@@ -481,6 +481,21 @@
                 return left.index - right.index;
             }), 'value');
     };
+    
+    var group = function (behavior) {
+        return function (obj, iteratee, context) {
+            var result = {};
+            iteratee = cb(iteratee, context);
+            _.each(obj, function (value, index) {
+                var key = iteratee(value, index, obj);
+                behavior(result, )
+            })
+        }  
+    };
+    
+    _.groupBy = group(function () {
+        
+    });
 
     _.random = function (min, max) {
         if (max == null) {
