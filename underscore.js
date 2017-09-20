@@ -501,6 +501,16 @@
         else result[key] = [value];
     });
 
+    _.indexBy =  group(function (result, value, key) {
+        result[key] = value;
+    });
+
+    _.countBy = group(function (result, value, key) {
+         if (_.has(result, key))
+             result[key] ++;
+         else result[key] = 1;
+    });
+
     _.random = function (min, max) {
         if (max == null) {
             max = min;
