@@ -488,13 +488,17 @@
             iteratee = cb(iteratee, context);
             _.each(obj, function (value, index) {
                 var key = iteratee(value, index, obj);
-                behavior(result, )
-            })
-        }  
+                behavior(result, value, key)
+            });
+            return result;
+        }
     };
-    
-    _.groupBy = group(function () {
-        
+
+    // 根据特定规则对数组或者对象中的元素进行分组
+    _.groupBy = group(function (result, value, key) {
+        if (_.has(result, key))
+            result[key].push(value);
+        else result[key] = [value];
     });
 
     _.random = function (min, max) {
@@ -595,6 +599,8 @@
     _.prototype.value = function () {
         return this._wrapped;
     };
+
+    _.property = property;
 
     _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
 

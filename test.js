@@ -79,3 +79,9 @@ log(shuffle);
 
 var sortBy = _.sortBy([1, 2, 3, 4, 5, 6], function(num){ return Math.sin(num); });
 log(sortBy);
+
+var groupBy = _.groupBy([1.3, 2.1, 2.4], function(num){ return Math.floor(num); });
+log(groupBy);
+
+var groupBy2  = _.groupBy(['one', 'two', 'three'], 'length');
+log(groupBy2);
