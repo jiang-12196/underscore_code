@@ -519,6 +519,30 @@
         return _.values(obj);
     };
 
+    _.size = function (obj) {
+        if (obj == null) return 0;
+        return isArrayLike(obj) ? obj.length : _.keys(obj).length;
+    };
+
+    _.partition = function (obj, predicate, context) {
+        predicate = cb(predicate, context);
+        var pass = [], fail = [];
+        _.each(obj, function (value, key, obj) {
+            (predicate(value, key, obj) ? pass : fail).push(value);
+        });
+        return [pass, fail];
+    };
+    
+    _.first = _.head = _.take = function (array, n, guard) {
+        if (array == null) return void 0;
+        if (n == null || guard) return array[0];
+        return _.initial(array, array.length - n);
+    };
+
+    _.initial = function (array, n, guard) {
+        return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 :n)));
+    }
+
     _.identity = function (value) {
         return value;
     };
