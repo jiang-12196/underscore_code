@@ -85,3 +85,9 @@ log(groupBy);
 
 var groupBy2  = _.groupBy(['one', 'two', 'three'], 'length');
 log(groupBy2);
+
+
+var count = _.countBy([1, 2, 3, 4, 5], function(num) {
+    return num % 2 == 0 ? 'even': 'odd';
+});
+log(count);
