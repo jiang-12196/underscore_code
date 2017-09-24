@@ -541,6 +541,56 @@
 
     _.initial = function (array, n, guard) {
         return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 :n)));
+    };
+    // last one or last n
+    _.last = function (array, n, guard) {
+        if (array == null) return void 0;
+
+        if (n == null || guard) return array[array.length - 1];
+
+        return _.rest(array, Math.max(0, array.length - n))
+    };
+
+    _.rest = _.tail = _.drop = function (array, n, guard) {
+        return slice.call(array, n == null || guard ? 1 : n);
+    };
+
+    // 去掉数组中所有的假值
+    _.compact = function (array) {
+        return _.filter(array, _.identity)
+    };
+
+    _.flatten = function (array, shallow) {
+        return flatten(array, shallow, false)
+    };
+
+    _.isArray = nativeIsArray || function (obj) {
+            return toString.call(obj) === '[object Array]';
+        };
+
+    var flatten = function (input, shallow, strict, startIndex) {
+        var output = [], idx = 0;
+        for (var i = startIndex || 0, length = getLength(input); i < length; i++) {
+            var value = input[i];
+            if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
+                if (!shallow)
+                    value = flatten(value, shallow, strict);
+                var j = 0, len = value.length;
+                output.length += len;
+                while (j < len) {
+                    output[idx++] = value[j++];
+                }
+            } else if (!strict) {
+                output[idx++] = value;
+            }
+        }
+        return output;
+    };
+
+    if (!_.isArguments(arguments)) {
+        _.isArguments = function (obj) {
+            return _.has(obj, 'callee');
+        }
     }
 
     _.identity = function (value) {

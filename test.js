@@ -91,3 +91,6 @@ var count = _.countBy([1, 2, 3, 4, 5], function(num) {
     return num % 2 == 0 ? 'even': 'odd';
 });
 log(count);
+
+var flatten = _.flatten([1, [2], [3, [[4]]]], false);
+log(flatten);
