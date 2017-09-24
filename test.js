@@ -94,3 +94,6 @@ log(count);
 
 var flatten = _.flatten([1, [2], [3, [[4]]]], false);
 log(flatten);
+
+var diff = _.difference([1, 2, 3, 7, 4, 5], [5, 2, 10]);
+log(diff);

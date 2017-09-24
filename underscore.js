@@ -587,11 +587,16 @@
         return output;
     };
 
-    if (!_.isArguments(arguments)) {
-        _.isArguments = function (obj) {
-            return _.has(obj, 'callee');
-        }
-    }
+    _.without = function (array) {
+        return _.difference(array, slice.call(arguments, 1));
+    };
+
+    _.difference = function (array) {
+        var rest = flatten(arguments, true, true, 1);
+        return _.filter(array, function (value) {
+            return !_.contains(rest, value);
+        })
+    };
 
     _.identity = function (value) {
         return value;
@@ -703,6 +708,12 @@
     _.prototype.toString = function () {
         return '' + this._wrapped;
     };
+
+    // if (!_.isArguments(arguments)) {
+    //     _.isArguments = function (obj) {
+    //         return _.has(obj, 'callee');
+    //     }
+    // }
 
     if (typeof define === 'function' && define.amd) {
         define('underscore', [], function () {
