@@ -97,3 +97,6 @@ log(flatten);
 
 var diff = _.difference([1, 2, 3, 7, 4, 5], [5, 2, 10]);
 log(diff);
+
+var without = _.without([1, 2, 1, 0, 3, 1, 4], 0, 1, 2);
+log(without);
