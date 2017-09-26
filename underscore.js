@@ -624,6 +624,10 @@
         return result;
     };
 
+    _.union = function () {
+        return _.uniq(flatten(arguments, true, true));
+    };
+
     _.isBoolean = function (obj) {
         return obj === true || obj === false || toString.call(obj) ==='[object Boolean]';
     };
