@@ -591,6 +591,43 @@
         return _.difference(array, slice.call(arguments, 1));
     };
 
+    _.uniq = _.unique = function (array, isSorted, iteratee, context) {
+        if (!_.isBoolean(isSorted)) {
+            context = iteratee;
+            iteratee = isSorted;
+            isSorted = false;
+        }
+
+        if (iteratee != null) {
+            iteratee = cb(iteratee, context);
+        }
+
+        var result = [];
+
+        var seen = [];
+
+        for (var i = 0, length = getLength(array); i < length; i++) {
+            var value = array[i];
+            var computed = iteratee ? iteratee(value, i, array) : value;
+            if (isSorted) {
+                if (!i || seen !== computed) result.push(value);
+                seen = computed;
+            } else if (iteratee) {
+                if (!_.contains(seen, computed)) {
+                    seen.push(computed);
+                    result.push(value);
+                }
+            } else if (!_.contains(result, value)) {
+                result.push(value);
+            }
+        }
+        return result;
+    };
+
+    _.isBoolean = function (obj) {
+        return obj === true || obj === false || toString.call(obj) ==='[object Boolean]';
+    };
+
     _.difference = function (array) {
         var rest = flatten(arguments, true, true, 1);
         return _.filter(array, function (value) {
