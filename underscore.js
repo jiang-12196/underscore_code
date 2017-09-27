@@ -659,6 +659,31 @@
         return result;
     };
 
+    _.object = function (list, values) {
+        var result = {};
+        for (var i = 0, length = getLength(list); i < length; i++) {
+            if (values) {
+                result[list[i]] = values[i];
+            } else {
+                result[list[i][0]] = list[i][1];
+            }
+        }
+        return result;
+    };
+
+    _.sortedIndex = function (array, obj, iteratee, context) {
+          iteratee = cb(iteratee, context, 1);
+          var value = iteratee(obj);
+          var low = 0, high = getLength(array);
+          while (low < high) {
+              var mid = Math.floor((low + high) / 2);
+              if (iteratee(array[mid] < value))
+                  low = mid + 1;
+              else high = mid;
+          }
+          return low;
+    };
+
     _.isBoolean = function (obj) {
         return obj === true || obj === false || toString.call(obj) ==='[object Boolean]';
     };
